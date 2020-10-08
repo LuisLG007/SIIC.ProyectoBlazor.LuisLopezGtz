@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SIIC.ProyectoBlazor.LuisLopezGtz.APIClient.APIWebClient;
 using SIIC.ProyectoBlazor.LuisLopezGtz.Bussines_Layer;
+using CurrieTechnologies.Razor.SweetAlert2;
+
 namespace SIIC.ProyectoBlazor.LuisLopezGtz
 {
     public class Program
@@ -26,6 +28,7 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz
             builder.Services.AddTransient(EmpleadosAPI => new EmpleadosAPI("https://tiendablazor.azurewebsites.net"));
             builder.Services.AddTransient<EmpleadosBL>();
             #endregion
+            builder.Services.AddSweetAlert2();
 
             await builder.Build().RunAsync();
         }

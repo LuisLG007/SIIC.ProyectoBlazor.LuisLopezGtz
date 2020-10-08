@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Components;
 using SIIC.ProyectoBlazor.LuisLopezGtz.APIClient.Models;
 using SIIC.ProyectoBlazor.LuisLopezGtz.Bussines_Layer;
 using System;
@@ -38,14 +39,14 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empresas
 
         public async Task CreateEmpresaAsync()
         {
-            await EmpresasBL.CreateEmpresaAsync(ObjEmpresa);            
-            await GetEmpresasAsync();
+            await EmpresasBL.CreateEmpresaAsync(ObjEmpresa);
+            await AlertSucces("Empresa se ha Guardado");         
         }
         public async Task UpdateEmpresaAsync()
         {
             await EmpresasBL.UpdateEmpresaAsync(ObjEmpresa);
-            ResetEmpresa();
-            await GetEmpresasAsync();
+            await AlertSucces("Empresa se ha actualizado");         
+
         }
         public async Task DeleteEmpresaAsync(EmpresaModel Empresa)
         {
@@ -57,9 +58,10 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empresas
 
 
         #region Extras
-        private void ResetEmpresa()
+        private async Task ResetEmpresa()
         {
             ObjEmpresa = new EmpresaModel();
+            await GetEmpresasAsync();
         }
         private void UpdateEmpresa(EmpresaModel Empresa)
         {
@@ -81,13 +83,46 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empresas
             if (ObjEmpresa.Id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
                 await CreateEmpresaAsync();
-                ResetEmpresa();
+                await ResetEmpresa();
             }
             else
             {
                 await UpdateEmpresaAsync();
-                ResetEmpresa();
+                await ResetEmpresa();
             }                      
+        }
+
+
+        public async Task AlertAsyncDelete(EmpresaModel Empresa)
+        {
+            SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¿Desea eliminar a " + Empresa.RazonSocial + "?",
+                Text = "Esta acción es irreversible",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Eliminar",
+                CancelButtonText = "Cancelar"
+            });
+
+            if (!string.IsNullOrEmpty(result.Value))
+            {
+                await DeleteEmpresaAsync(Empresa);
+                await Swal.FireAsync(
+                  "Eliminado",
+                  "La acción se realizó con exitó",
+                  SweetAlertIcon.Success
+                  );
+            }
+        }
+
+        public async Task AlertSucces(String Title)
+        {
+            await Swal.FireAsync(
+                Title,
+                "La acción se realizó con exitó",
+                SweetAlertIcon.Success
+                );
         }
         #endregion
     }

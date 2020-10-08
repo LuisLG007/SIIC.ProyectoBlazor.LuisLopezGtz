@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Components;
 using SIIC.ProyectoBlazor.LuisLopezGtz.APIClient.Models;
 using SIIC.ProyectoBlazor.LuisLopezGtz.Bussines_Layer;
 using System;
@@ -36,12 +37,14 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
         }
         public async Task CreateEmepladoAsync()
         {
-            await EmpladosBL.CreateEmpleadosAsync(ObjEmpleado);          
+            await EmpladosBL.CreateEmpleadosAsync(ObjEmpleado);
+            await AlertSucces("Nuevo empleado guardado");
         }
 
         public async Task UpdateEmpleadoAsync()
         {
             await EmpladosBL.UpdateEmpleadosAsync(ObjEmpleado);
+            await AlertSucces("Empleado se ha actualizado");
         }
         public async Task DeleteEmpleadoAsync(EmpleadoModel Empleado)
         {
@@ -85,6 +88,39 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
                 await ResetEmpleado();
             }
         }
+
+        public async Task AlertAsyncDelete(EmpleadoModel Empleado)
+        {
+            SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¿Desea eliminar a "+ Empleado.Nombre + "?",
+                Text = "Esta acción es irreversible",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Eliminar",
+                CancelButtonText = "Cancelar"
+            });
+
+            if (!string.IsNullOrEmpty(result.Value))
+            {
+                await DeleteEmpleadoAsync(Empleado);
+                await Swal.FireAsync(
+                  "Eliminado",
+                  "La acción se realizó con exitó",
+                  SweetAlertIcon.Success
+                  );
+            }           
+        }
+
+        public async Task AlertSucces(String Title)
+        {
+            await Swal.FireAsync(
+                Title,
+                "La acción se realizó con exitó",
+                SweetAlertIcon.Success
+                );
+        }
+
         #endregion
     }
 }

@@ -1,5 +1,7 @@
 ﻿@page "/empleados"
 
+@inject SweetAlertService Swal
+
 
 <div class="row d-flex justify-content-center">
     <div class="card text-center">
@@ -34,7 +36,7 @@
                             <td>@item.Correo</td>
                             <td>@item.Activo</td>
                             <td><button class="btn btn-primary" data-toggle="modal" data-target="#EmpleadoModal" @onclick="(() => UpdateEmpleado(item))">Editar</button></td>
-                            <td><button class="btn btn-danger" @onclick="(() => DeleteEmpleadoAsync(item))">Eliminar</button></td>
+                            <td><button class="btn btn-danger" @onclick="(() => AlertAsyncDelete(item))">Eliminar</button></td>
                         </tr>
                     }
                 </tbody>
@@ -93,7 +95,7 @@
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-xl-6 col-sm-12">
                             <label for="InputActivo">Estatus</label>
-                            <input type="checkbox" class="form-control" id="InputActivo" placeholder="Activo" @bind="ObjEmpleado.Activo">    
+                            <input type="checkbox" class="form-control" id="InputActivo" placeholder="Activo" @bind="ObjEmpleado.Activo">
                         </div>
                     </div>
                 </div>
