@@ -1,7 +1,12 @@
 ﻿@page "/"
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(1)">
+    <div class="row d-flex justify-content-center">
+        <div class="card text-white bg-primary mb-3" style="max-width: 50rem;">
+            <div class="card-header">¡Hola!</div>
+            <div class="card-body">
+                <h5 class="card-title">CRUD Blazor Web Assembly</h5>
+                <p class="card-text">Hecho por: Luis Alberto López Gutiérrez</p>
+            </div>
+        </div>
+    </div>
+</Animate>
