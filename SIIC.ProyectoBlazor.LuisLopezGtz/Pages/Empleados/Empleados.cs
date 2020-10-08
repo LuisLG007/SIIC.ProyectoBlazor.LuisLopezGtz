@@ -25,9 +25,11 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
         public string BtnSave { get; set; }
         #endregion
 
-        #region Bussines Layer Inject
+        #region Inject
         [Inject]
         private EmpleadosBL EmpladosBL { get; set; }
+        [Inject]
+        SweetAlertService Swal { get; set; }
         #endregion
 
         #region Bussines Layer Functions
@@ -37,14 +39,27 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
         }
         public async Task CreateEmepladoAsync()
         {
-            await EmpladosBL.CreateEmpleadosAsync(ObjEmpleado);
-            await AlertSucces("Nuevo empleado guardado");
+            bool Response = await EmpladosBL.CreateEmpleadosAsync(ObjEmpleado);
+            if (Response)
+            {
+                await Alert("Nuevo empleado guardado", "Acción realizada con exito", true);
+            }else
+            {
+                await Alert("Opps...","Ocurrio un error", false);
+            }
         }
 
         public async Task UpdateEmpleadoAsync()
         {
-            await EmpladosBL.UpdateEmpleadosAsync(ObjEmpleado);
-            await AlertSucces("Empleado se ha actualizado");
+            bool Response = await EmpladosBL.UpdateEmpleadosAsync(ObjEmpleado);
+            if (Response)
+            {
+                await Alert("Empleado actualizado", "Acción realizada con exito", true);
+            }
+            else
+            {
+                await Alert("Opps...", "Ocurrio un error", false);
+            }
         }
         public async Task DeleteEmpleadoAsync(EmpleadoModel Empleado)
         {
@@ -112,13 +127,23 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
             }           
         }
 
-        public async Task AlertSucces(String Title)
+        public async Task Alert(String Title, string SubTitle, bool Type)
         {
-            await Swal.FireAsync(
+            if (Type)
+            {
+                await Swal.FireAsync(
                 Title,
-                "La acción se realizó con exitó",
+                SubTitle,
                 SweetAlertIcon.Success
                 );
+            }else
+            {
+                await Swal.FireAsync(
+               Title,
+               SubTitle,
+               SweetAlertIcon.Error
+               );
+            }
         }
 
         #endregion
