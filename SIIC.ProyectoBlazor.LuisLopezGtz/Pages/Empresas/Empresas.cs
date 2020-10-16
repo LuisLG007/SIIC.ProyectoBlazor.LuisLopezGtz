@@ -23,6 +23,7 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empresas
         public string TitleModal { get; set; }
         public string BgMHeader { get; set; }
         public string BtnSave { get; set; }
+        public int Opacity { get; set; } = 1;
         #endregion
 
 
@@ -37,6 +38,7 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empresas
         public async Task GetEmpresasAsync()
         {
             ListEmpresas = await EmpresasBL.GetEmpresasAsync();
+            Opacity = 0;
         }
 
         public async Task CreateEmpresaAsync()

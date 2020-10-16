@@ -23,6 +23,7 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
         public string TitleModal { get; set; }
         public string BgMHeader { get; set; }
         public string BtnSave { get; set; }
+        public int Opacity { get; set; } = 1;
         #endregion
 
         #region Inject
@@ -36,6 +37,7 @@ namespace SIIC.ProyectoBlazor.LuisLopezGtz.Pages.Empleados
         public async Task GetEmpleadoAsync ()
         {
             ListEmpleados = await EmpladosBL.GetEmpleadosAsync();
+            Opacity = 0;
         }
         public async Task CreateEmepladoAsync()
         {
